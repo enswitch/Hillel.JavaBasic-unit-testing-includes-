@@ -13,7 +13,7 @@ public class PointTest {
     }
 
     @Test
-    void pointSetAndGetTest() {
+    void pointSetAndGet() {
         point2.setX(-4);
         point2.setY(-6);
         Assertions.assertEquals(-4, point2.getX());
@@ -22,62 +22,72 @@ public class PointTest {
     }
 
     @Test
-    void pointInfoShowTest() {
+    void pointInfoShow() {
         String result = point1.toString();
         Assertions.assertEquals("Point: " + "x =" + 2 + ", y =" + 3, result);
         System.out.println(result);
     }
 
     @Test
-    void pointEqualsTest() {
+    void pointEquals() {
         Boolean result = point1.equals(point2);
         Assertions.assertEquals(true, result);
     }
 
     @Test
-    void pointNotEqualsTest() {
+    void pointNotEquals() {
         Boolean result = point1.equals(point3);
         Assertions.assertEquals(false, result);
     }
 
     @Test
-    void pointClonedConstructorTest() {
+    void pointClonedConstructor() {
         Point pointCopy = new Point(point2);
         Assertions.assertEquals(true, pointCopy.equals(point2));
         System.out.println("Copied point by constructor: " + pointCopy.toString());
     }
 
     @Test
-    void pointCloneMethodTest() throws CloneNotSupportedException {
+    void pointCloneMethod() throws CloneNotSupportedException {
         Point pointCopy = (Point) point3.clone();
         Assertions.assertEquals(true, pointCopy.equals(point3));
         System.out.println("Copied point by method clone: " + pointCopy.toString());
     }
 
     @Test
-    void DistanceBetweenPointsTest() {
+    void DistanceBetweenPoints() {
         int result = Point.distanceBetweenPoints(point1, point3);
         Assertions.assertEquals(5, result);
         System.out.println("The distance between matched points is: " + result);
     }
 
     @Test
-    void sameDistanceBetweenPointsTest() {
+    void sameDistanceBetweenPoints() {
         int result = Point.distanceBetweenPoints(point1, point2);
         Assertions.assertEquals(0, result);
         System.out.println("Points have the same coordinates");
     }
 
     @Test
-    void oneArgDistanceBetweenPointsTest() {
+    void nullDistanceBetweenPoints() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Point.distanceBetweenPoints(point3, null));
+    }
+
+    @Test
+    void DistanceBetweenPointsOneArg() {
         int result = point2.distanceBetweenPoints(point3);
         Assertions.assertEquals(5, result);
         System.out.println("The distance between matched points is: " + result);
     }
     @Test
-    void oneArgSameDistanceBetweenPointsTest() {
+    void SameDistanceBetweenPointsOneArg() {
         int result = point2.distanceBetweenPoints(point1);
         Assertions.assertEquals(0, result);
         System.out.println("Points have the same coordinates");
+    }
+
+    @Test
+    void nullDistanceBetweenPointsOneArg() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> point1.distanceBetweenPoints(null));
     }
 }
