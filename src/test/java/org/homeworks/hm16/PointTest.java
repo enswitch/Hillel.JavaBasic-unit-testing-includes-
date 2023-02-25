@@ -5,11 +5,12 @@ import org.junit.jupiter.api.*;
 public class PointTest {
 
     Point point1, point2, point3;
+
     @BeforeEach
     public void createPoint() {
         point1 = new Point(2, 3);
         point2 = new Point(point1);
-        point3 = new Point(5,7);
+        point3 = new Point(5, 7);
     }
 
     @Test
@@ -79,6 +80,7 @@ public class PointTest {
         Assertions.assertEquals(5, result);
         System.out.println("The distance between matched points is: " + result);
     }
+
     @Test
     void SameDistanceBetweenPointsOneArg() {
         int result = point2.distanceBetweenPoints(point1);
