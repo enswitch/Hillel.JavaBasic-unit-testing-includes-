@@ -2,7 +2,10 @@ package org.homeworks.hm17;
 
 public class ArraysFunctional {
 
-    public double arraysAverageCount(int arr[]) {
+    public double arraysAverageValue(int arr[]) {
+        if (arr == null) {
+            throw new IllegalArgumentException("Unvalid data type!");
+        }
         double result = 0;
         int sum = 0;
         for (int i = 0; i < arr.length; i++) {
@@ -14,6 +17,9 @@ public class ArraysFunctional {
     }
 
     public boolean isMatrixSquare(int arr[][]) {
+        if (arr == null) {
+            throw new IllegalArgumentException("Unvalid data type!");
+        }
         boolean isSquare = true;
         for (int row = 0; row < arr.length; row++) {
             for (int col = 0; col < arr[row].length; col++)
