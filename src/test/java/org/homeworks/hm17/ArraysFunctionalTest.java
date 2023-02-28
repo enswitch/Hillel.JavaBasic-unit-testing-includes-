@@ -16,33 +16,22 @@ public class ArraysFunctionalTest {
                        {4, 5},
                        {6}};
 
+    int emptyMatrix[][] = {{}};
+
     @Test
     void arrayAverageValue() {
         Assertions.assertEquals(6.27, arr.arraysAverageValue(newArr));
-    }
-
-    @Test
-    void emptyArrayAverageValue() {
         Assertions.assertEquals(0.0, arr.arraysAverageValue(emptyArr));
-    }
-
-    @Test
-    void AverageValueIsNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> arr.arraysAverageValue(null));
     }
 
     @Test
     void isMatrixSquare() {
         Assertions.assertEquals(true, arr.isMatrixSquare(matrix1));
-    }
-
-    @Test
-    void isMatrixNotSquare() {
         Assertions.assertEquals(false, arr.isMatrixSquare(matrix2));
-    }
-
-    @Test
-    void isMatrixSquareIsNull() {
+        Assertions.assertEquals(false, arr.isMatrixSquare(emptyMatrix));
         Assertions.assertThrows(IllegalArgumentException.class, () -> arr.isMatrixSquare(null));
     }
+
+
 }
