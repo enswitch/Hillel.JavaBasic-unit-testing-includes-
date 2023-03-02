@@ -1,7 +1,5 @@
 package org.homeworks.hm17;
 
-import java.util.Arrays;
-
 public class ArraysFunctional {
 
     public double arraysAverageValue(int arr[]) {
@@ -19,19 +17,20 @@ public class ArraysFunctional {
     }
 
     public boolean isMatrixSquare(int arr[][]) {
-        boolean isSquare = false;
+        boolean isSquare = true;
         if (arr == null) {
             throw new IllegalArgumentException("Unvalid data type!");
         }
-        for (int row = 0; row < arr.length; row++) {
-            for (int col = 0; col < arr[row].length; col++)
-                if (arr.length == arr[row].length) {
-                    isSquare = true;
-                } else if(arr.length == 0 || arr[row].length == 0) {
-                    isSquare = false;
-                } else {
-                    isSquare = false;
-                }
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == null) {
+                throw new IllegalArgumentException("Unvalid data type!");
+            }
+            if (arr.length != arr[i].length) {
+                isSquare = false;
+            }
+            if (arr.length == 0 || arr[i].length == 0) {
+                isSquare = false;
+            }
         }
         return isSquare;
     }
