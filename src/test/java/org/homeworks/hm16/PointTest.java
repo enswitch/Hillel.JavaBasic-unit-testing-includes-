@@ -4,13 +4,18 @@ import org.junit.jupiter.api.*;
 
 public class PointTest {
 
-    Point point1, point2, point3;
+    Point point1;
+    Point point2;
+    Point point3;
+    Point point4;
 
     @BeforeEach
-    public void createPoints() {
+    public void createPoints() throws CloneNotSupportedException {
         point1 = new Point(2, 3);
         point2 = new Point(point1);
         point3 = new Point(5, 7);
+        point4 = (Point) point2.clone();
+
     }
 
     @Test
@@ -29,18 +34,45 @@ public class PointTest {
     }
 
     @Test
-    void pointEquals() {
-        Boolean resultEqual = point1.equals(point2);
-        Assertions.assertEquals(true, resultEqual);
-
-        Boolean resultNotEqual = point1.equals(point3);
-        Assertions.assertEquals(false, resultNotEqual);
+    void pointEqualsReflexivity() {
+        Assertions.assertEquals(true, point1.equals(point1));
     }
 
     @Test
-    void pointClonedConstructor() {
-        Point pointCopy = new Point(point2);
-        Assertions.assertEquals(true, pointCopy.equals(point2));
+    void pointEqualsSymmetric() {
+        Assertions.assertEquals(true, point1.equals(point2));
+        Assertions.assertEquals(true, point2.equals(point1));
+    }
+
+    @Test
+    void pointEqualsTransitive() {
+        Assertions.assertEquals(true, point1.equals(point2));
+        Assertions.assertEquals(true, point1.equals(point4));
+        Assertions.assertEquals(true, point2.equals(point4));
+    }
+
+    @Test
+    void pointEqualsConsistency() {
+        Assertions.assertEquals(false, point1.equals(point3));
+        Assertions.assertEquals(false, point1.equals(point3));
+    }
+
+    @Test
+    void pointEqualsIsNull() {
+        Assertions.assertEquals(false, point1.equals(null));
+    }
+
+    @Test
+    void pointHashCodeEqualsConsistency() {
+        Assertions.assertEquals(true, point1.hashCode() == point2.hashCode());
+    }
+
+    @Test
+    void pointHashCodeInternalConsistency() {
+        Assertions.assertEquals(true, point1.hashCode() == point2.hashCode());
+        point1.setY(5);
+        Assertions.assertEquals(false, point1.hashCode() == point2.hashCode());
+
     }
 
     @Test
@@ -53,23 +85,35 @@ public class PointTest {
     void distanceBetweenPoints() { // contains two parameters
         int distanceExist = Point.distanceBetweenPoints(point1, point3);
         Assertions.assertEquals(5, distanceExist);
+    }
 
-        int distanceNotExist = Point.distanceBetweenPoints(point1, point2);
-        Assertions.assertEquals(0, distanceNotExist);
+    @Test
+    void distanceBetweenPointsIsSame() {
+        int distanceIsSame = Point.distanceBetweenPoints(point1, point2);
+        Assertions.assertEquals(0, distanceIsSame);
+    }
 
+    @Test
+    void distanceBetweenPointCheckForNull() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> Point.distanceBetweenPoints(point3, null));
     }
 
     @Test
-    void distanceBetweenPointsOverload() { //must contain one parameter only
+    void distanceBetweenPointsOverload() { // contains one parameter
         int distanceExist = point2.distanceBetweenPoints(point3);
         Assertions.assertEquals(5, distanceExist);
+    }
 
+    @Test
+    void distanceBetweenPointsIsSameOverload() {
         int distanceNotExist = point2.distanceBetweenPoints(point1);
         Assertions.assertEquals(0, distanceNotExist);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> point1.distanceBetweenPoints(null));
-
     }
+
+    @Test
+    void distanceBetweenPointsCheckForNullOverload() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> point1.distanceBetweenPoints(null));
+    }
+
 
 }
