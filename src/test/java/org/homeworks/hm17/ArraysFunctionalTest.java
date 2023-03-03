@@ -6,24 +6,16 @@ import org.junit.jupiter.api.Test;
 public class ArraysFunctionalTest {
 
     ArraysFunctional arr = new ArraysFunctional();
-    
-    int newArr[] = {5, 8, -3, 6, 13, 54, -22, 0, 3, -5, 10};
-    int emptyArr[] = new int[]{};
-
-
-    int matrix1[][] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-    int matrix2[][] = {{1, 2, 3}, {}, {4, 5, 6}};
-    int emptyMatrix[][] = {{}};
-    int deepNullMatrix[][] = {{1, 2}, null, {3, 4}};
-
 
     @Test
     void arrayAverageValue() {
+        int[] newArr = {5, 8, -3, 6, 13, 54, -22, 0, 3, -5, 10};
         Assertions.assertEquals(6.27, arr.arraysAverageValue(newArr));
     }
 
     @Test
     void arrayEmptyAverageValue() {
+        int[] emptyArr = new int[]{};
         Assertions.assertEquals(0.0, arr.arraysAverageValue(emptyArr));
     }
 
@@ -34,17 +26,20 @@ public class ArraysFunctionalTest {
 
     @Test
     void isMatrixSquare() {
-        Assertions.assertEquals(true, arr.isMatrixSquare(matrix1));
+        int[][] matrix1 = {{1, 2}, {3, 4}};
+        Assertions.assertTrue(arr.isMatrixSquare(matrix1));
     }
 
     @Test
     void isMatrixNotSquare() {
-        Assertions.assertEquals(false, arr.isMatrixSquare(matrix2));
+        int[][] matrix2 = {{1, 2, 3}, {}, {4, 5, 6}};
+        Assertions.assertFalse(arr.isMatrixSquare(matrix2));
     }
 
     @Test
     void isMatrixSquareIsEmpty() {
-        Assertions.assertEquals(false, arr.isMatrixSquare(emptyMatrix));
+        int[][] emptyMatrix = {{}};
+        Assertions.assertFalse(arr.isMatrixSquare(emptyMatrix));
     }
 
     @Test
@@ -54,6 +49,7 @@ public class ArraysFunctionalTest {
 
     @Test
     void matrixSquareDeepCheckForNull() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> arr.isMatrixSquare(deepNullMatrix));
+        int[][] deepNullMatrix = {{1, 2}, null, {3, 4}};
+        Assertions.assertThrows(IllegalStateException.class, () -> arr.isMatrixSquare(deepNullMatrix));
     }
 }

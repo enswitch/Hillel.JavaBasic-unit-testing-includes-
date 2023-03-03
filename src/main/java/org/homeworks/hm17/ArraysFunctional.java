@@ -6,15 +6,15 @@ public class ArraysFunctional {
         if (arr == null) {
             throw new IllegalArgumentException("Unvalid data type!");
         }
-        double result = 0;
         int sum = 0;
         for (int i = 0; i < arr.length; i++) {
             sum += arr[i];
-            result = (double) sum / arr.length;
         }
+        double result = (double) sum / arr.length;
         result = Math.round(result * 100.0) / 100.0;
         return result;
     }
+
 
     public boolean isMatrixSquare(int arr[][]) {
         boolean isSquare = true;
@@ -23,12 +23,9 @@ public class ArraysFunctional {
         }
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] == null) {
-                throw new IllegalArgumentException("Unvalid data type!");
+                throw new IllegalStateException("Unvalid state!");
             }
             if (arr.length != arr[i].length) {
-                isSquare = false;
-            }
-            if (arr.length == 0 || arr[i].length == 0) {
                 isSquare = false;
             }
         }
