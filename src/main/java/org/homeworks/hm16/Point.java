@@ -7,8 +7,8 @@ public class Point implements Cloneable {
     private int y;
 
     public Point(Point point) {
-        this.x = point.x;
-        this.y = point.y;
+       this.x = point.x;
+       this.y = point.y;
     }
 
     public Point(int x, int y) {

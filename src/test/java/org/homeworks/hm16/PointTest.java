@@ -7,24 +7,22 @@ public class PointTest {
     Point point1;
     Point point2;
     Point point3;
-    Point point4;
+
 
     @BeforeEach
     public void createPoints() throws CloneNotSupportedException {
         point1 = new Point(2, 3);
-        point2 = new Point(point1);
+        point2 = new Point(2, 3);
         point3 = new Point(5, 7);
-        point4 = (Point) point2.clone();
-
     }
 
     @Test
     void pointSetAndGet() {
         point2.setX(-4);
         point2.setY(-6);
+
         Assertions.assertEquals(-4, point2.getX());
         Assertions.assertEquals(-6, point2.getY());
-
     }
 
     @Test
@@ -34,51 +32,46 @@ public class PointTest {
     }
 
     @Test
-    void pointEqualsReflexivity() {
-        Assertions.assertEquals(true, point1.equals(point1));
-    }
+    void pointCloneConstructor() {
+        String savePoint = point3.toString();
+        Point pointCopy = new Point(point3);
 
-    @Test
-    void pointEqualsSymmetric() {
-        Assertions.assertEquals(true, point1.equals(point2));
-        Assertions.assertEquals(true, point2.equals(point1));
-    }
-
-    @Test
-    void pointEqualsTransitive() {
-        Assertions.assertEquals(true, point1.equals(point2));
-        Assertions.assertEquals(true, point1.equals(point4));
-        Assertions.assertEquals(true, point2.equals(point4));
-    }
-
-    @Test
-    void pointEqualsConsistency() {
-        Assertions.assertEquals(false, point1.equals(point3));
-        Assertions.assertEquals(false, point1.equals(point3));
-    }
-
-    @Test
-    void pointEqualsIsNull() {
-        Assertions.assertEquals(false, point1.equals(null));
-    }
-
-    @Test
-    void pointHashCodeEqualsConsistency() {
-        Assertions.assertEquals(true, point1.hashCode() == point2.hashCode());
-    }
-
-    @Test
-    void pointHashCodeInternalConsistency() {
-        Assertions.assertEquals(true, point1.hashCode() == point2.hashCode());
-        point1.setY(5);
-        Assertions.assertEquals(false, point1.hashCode() == point2.hashCode());
-
+        Assertions.assertEquals(point3, pointCopy);
+        Assertions.assertEquals(savePoint, point3.toString()); // if test failed, it means that copy constructor was changed!
     }
 
     @Test
     void pointCloneMethod() throws CloneNotSupportedException {
-        Point pointCopy = (Point) point3.clone();
-        Assertions.assertEquals(true, pointCopy.equals(point3));
+        Point pointCloned = (Point) point3.clone();
+        Assertions.assertEquals(point3, pointCloned);
+    }
+
+    @Test
+    void pointEquals() throws CloneNotSupportedException {
+        Assertions.assertTrue(point1.equals(point1)); // reflexivity
+
+        Assertions.assertTrue(point1.equals(point2)); // symmetric
+        Assertions.assertTrue(point2.equals(point1));
+
+        Point clonedPoint = new Point(point1);        // transitive
+        Assertions.assertTrue(point1.equals(point2));
+        Assertions.assertTrue(point1.equals(clonedPoint));
+        Assertions.assertTrue(point2.equals(clonedPoint));
+
+        Assertions.assertFalse(point1.equals(point3)); // consistency
+        Assertions.assertFalse(point1.equals(point3));
+
+        Assertions.assertFalse(point1.equals(null));   // null check
+    }
+
+    @Test
+    void pointHashCode() {
+        Assertions.assertEquals(point1, point2);
+        Assertions.assertEquals(point1.hashCode(), point2.hashCode()); // equals consistency
+
+        int hashInt = point1.hashCode();   // internal consistency
+        point1.setY(5);
+        Assertions.assertNotEquals(hashInt, point1.hashCode());
     }
 
     @Test
@@ -114,6 +107,4 @@ public class PointTest {
     void distanceBetweenPointsCheckForNullOverload() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> point1.distanceBetweenPoints(null));
     }
-
-
 }
