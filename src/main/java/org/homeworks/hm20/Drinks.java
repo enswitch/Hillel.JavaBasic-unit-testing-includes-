@@ -12,7 +12,7 @@ public class Drinks {
         return totalPriceToPay;
     }
 
-    public void orderProcess(DrinksMachine item) { //technical method which not returns smth, I don`t know if important to create unit test for this method
+    public void orderProcess(DrinksMachine item) { //technical method which not returns smth and live in makeOrder method only, I don`t know if important to create unit test for this method
         item.makeDrink();
         System.out.println("The price for a " + item.name().toLowerCase() + " would be " + item.getPriceDrink() + "$");
         System.out.println();
