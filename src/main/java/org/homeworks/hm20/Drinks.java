@@ -1,65 +1,120 @@
 package org.homeworks.hm20;
 
-public class Drinks {
-    private static int orderedDrinksCount = 0;
-    private static double totalPriceToPay = 0;
+import java.util.List;
 
-    public static int getOrderedDrinksCount() {
+public class Drinks {
+
+    private final double PRICE_WATER = 0.90;
+    private final double PRICE_TEA = 1.25;
+    private final double PRICE_COFFEE = 1.50;
+    private final double PRICE_COCA_COLA = 1.10; // IF YOU WANT TO BUY THIS ITEM, PLEASE TYPE FULL ITEM NAME: - "coca_cola".
+    private final double PRICE_LEMONADE = 1.90;
+    private final double PRICE_MOHITO = 2.25;
+    private int orderedDrinksCount = 0;
+    private double totalPriceToPay = 0;
+
+    public int getOrderedDrinksCount() {
         return orderedDrinksCount;
     }
 
-    public static double getTotalPriceToPay() {
+    public double getTotalPriceToPay() {
         return totalPriceToPay;
     }
 
-    public void orderProcess(DrinksMachine item) { //technical method which not returns smth and live in makeOrder method only, I don`t know if important to create unit test for this method
-        item.makeDrink();
-        System.out.println("The price for a " + item.name().toLowerCase() + " would be " + item.getPriceDrink() + "$");
-        System.out.println();
-        orderedDrinksCount++;
-        totalPriceToPay += item.getPriceDrink();
+    public double getPRICE_WATER() {
+        return PRICE_WATER;
     }
 
-    public double makeOrder(DrinksMachine... order) {
-        if (order == null) {
-            throw new IllegalStateException("No one of drinks was chosen!");
-        }
-        for (int i = 0; i < order.length; i++) {
-            if (order[i] == null) {
-                throw new IllegalStateException("Choose next drink or finish the order!");
-            }
-            switch (order[i]) {
+    public double getPRICE_TEA() {
+        return PRICE_TEA;
+    }
+
+    public double getPRICE_COFFEE() {
+        return PRICE_COFFEE;
+    }
+
+    public double getPRICE_COCA_COLA() {
+        return PRICE_COCA_COLA;
+    }
+
+    public double getPRICE_LEMONADE() {
+        return PRICE_LEMONADE;
+    }
+
+    public double getPRICE_MOHITO() {
+        return PRICE_MOHITO;
+    }
+
+
+    public double makeOrder() {
+        Drinks drink = new Drinks();
+        Order clientOrder = new Order();
+        List<DrinksMachine> orderList = clientOrder.addOrder();
+        for (int i = 0; i < orderList.size(); i++) {
+            switch (orderList.get(i)) {
                 case COFFEE: {
-                    orderProcess(DrinksMachine.COFFEE);
+                    DrinksMachine.COFFEE.makeDrink();
+                    System.out.println("The price for a " + DrinksMachine.COFFEE.name().toLowerCase() + " would be " + drink.getPRICE_COFFEE() + "$");
+                    orderedDrinksCount++;
+                    totalPriceToPay += drink.getPRICE_COFFEE();
+                    System.out.println();
                     break;
                 }
                 case TEA: {
-                    orderProcess(DrinksMachine.TEA);
+                    DrinksMachine.TEA.makeDrink();
+                    System.out.println("The price for a " + DrinksMachine.TEA.name().toLowerCase() + " would be " + drink.getPRICE_TEA() + "$");
+                    orderedDrinksCount++;
+                    totalPriceToPay += drink.getPRICE_TEA();
+                    System.out.println();
                     break;
                 }
                 case LYMONADE: {
-                    orderProcess(DrinksMachine.LYMONADE);
+                    DrinksMachine.LYMONADE.makeDrink();
+                    System.out.println("The price for a " + DrinksMachine.LYMONADE.name().toLowerCase() + " would be " + drink.getPRICE_LEMONADE() + "$");
+                    orderedDrinksCount++;
+                    totalPriceToPay += drink.getPRICE_LEMONADE();
+                    System.out.println();
                     break;
                 }
                 case MOHITO: {
-                    orderProcess(DrinksMachine.MOHITO);
+                    DrinksMachine.MOHITO.makeDrink();
+                    System.out.println("The price for a " + DrinksMachine.MOHITO.name().toLowerCase() + " would be " + drink.getPRICE_MOHITO() + "$");
+                    orderedDrinksCount++;
+                    totalPriceToPay += drink.getPRICE_MOHITO();
+                    System.out.println();
                     break;
                 }
                 case WATER: {
-                    orderProcess(DrinksMachine.WATER);
+                    DrinksMachine.WATER.makeDrink();
+                    System.out.println("The price for a " + DrinksMachine.WATER.name().toLowerCase() + " would be " + drink.getPRICE_WATER() + "$");
+                    orderedDrinksCount++;
+                    totalPriceToPay += drink.getPRICE_WATER();
+                    System.out.println();
                     break;
                 }
                 case COCA_COLA: {
-                    orderProcess(DrinksMachine.COCA_COLA);
+                    DrinksMachine.COCA_COLA.makeDrink();
+                    System.out.println("The price for a " + DrinksMachine.COCA_COLA.name().toLowerCase() + " would be " + drink.getPRICE_COCA_COLA() + "$");
+                    orderedDrinksCount++;
+                    totalPriceToPay += drink.getPRICE_COCA_COLA();
+                    System.out.println();
                     break;
                 }
                 default:
-                    throw new IllegalArgumentException("Unknown item");
+                    System.out.println("UNKNOWN ITEM!");
             }
         }
         System.out.println("Drinks were bought: " + getOrderedDrinksCount());
-        System.out.println("Total price: " + getTotalPriceToPay() + "$");
-        return totalPriceToPay;
+        double totalPrice = getTotalPriceToPay();
+        totalPrice = Math.round(totalPrice * 100.0) / 100.0;
+        System.out.println("Total price: " + totalPrice + "$");
+        return totalPrice;
+    }
+
+
+    public static void main(String[] args) {
+        Drinks drink = new Drinks();
+        drink.makeOrder();
     }
 
 }
