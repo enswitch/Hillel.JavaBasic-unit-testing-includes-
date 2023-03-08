@@ -15,10 +15,10 @@ public enum DrinksMachine implements MakeDrinks {
             System.out.println("To make tea you need: a stick of tea, water, sugar by choice");
         }
     },
-    LYMONADE() {
+    LEMONADE() {
         @Override
         public void makeDrink() {
-            System.out.println("To make lymonade you need: water, syrup, mint, lemon, sugar");
+            System.out.println("To make lemonade you need: water, syrup, mint, lemon, sugar");
         }
     },
     MOHITO() {
