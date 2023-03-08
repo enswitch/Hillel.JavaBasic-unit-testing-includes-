@@ -49,7 +49,7 @@ public class ArraysFunctionalTest {
 
     @Test
     void matrixSquareDeepCheckForNull() {
-        int[][] deepNullMatrix = {{1, 2}, null, {3, 4}};
+        int[][] deepNullMatrix = {{1, 2, 3}, null, {3, 4, 5}};
         Assertions.assertThrows(IllegalStateException.class, () -> arr.isMatrixSquare(deepNullMatrix));
     }
 }

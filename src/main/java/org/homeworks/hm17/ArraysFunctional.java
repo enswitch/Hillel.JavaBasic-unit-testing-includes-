@@ -31,4 +31,10 @@ public class ArraysFunctional {
         }
         return isSquare;
     }
+
+    public static void main(String[] args) {
+        ArraysFunctional prototype = new ArraysFunctional();
+        int[][] matrix = {{1, 2, 3}, null, {3, 4, 5}};
+        prototype.isMatrixSquare(matrix);
+    }
 }
