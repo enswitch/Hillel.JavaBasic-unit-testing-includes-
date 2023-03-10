@@ -36,7 +36,7 @@ public class Order {
     }
 
 
-    public List createOrder() {
+    public void createOrder() {
 
         String clientRequest = null;
         System.out.println("Welcome, what do you want to drink?");
@@ -51,12 +51,7 @@ public class Order {
                     try {
                         String clientRequestTransform = clientRequest.toUpperCase();
                         DrinksMachine clientOrder = DrinksMachine.valueOf(clientRequestTransform);
-
-                        for (int i = 0; i < DrinksMachine.values().length; i++) {
-                            if (clientOrder.equals(DrinksMachine.values()[i])) {
-                                clientOrderList.add(clientOrder);
-                            }
-                        }
+                        clientOrderList.add(clientOrder);
                     } catch (IllegalArgumentException exc) {
                         System.out.println("Wrong item to buy!");
                     }
@@ -64,11 +59,10 @@ public class Order {
             }
         } while (!clientRequest.equals("finish"));
         System.out.println("Your order: " + getClientOrderList());
-        return getClientOrderList();
     }
 
 
-    public double printOrder() {
+    public void printOrder() {
         Drinks drink = new Drinks();
         for (DrinksMachine i: clientOrderList) {
             switch (i) {
@@ -128,7 +122,6 @@ public class Order {
         double totalPrice = getTotalPriceToPay();
         totalPrice = Math.round(totalPrice * 100.0) / 100.0;
         System.out.println("Total price: " + totalPrice + "$");
-        return totalPrice;
     }
 
     public static void main(String[] args) {
