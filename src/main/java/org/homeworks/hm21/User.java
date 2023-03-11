@@ -6,10 +6,11 @@ public class User {
     private String login;
     private String password;
 
-    public User() {
-        this.login = createLogin();
-        this.password = createPassword();
-        confirmPassword();
+
+    public User(String login, String password, String confirmPassword) {
+        this.login = createLogin(login);
+        this.password = createPassword(password);
+        confirmPassword(confirmPassword);
     }
 
 
@@ -29,109 +30,99 @@ public class User {
         this.password = null;
     }
 
-    public String createLogin() {
-        String userInput;
+    public String createLogin(String userInput) throws NullPointerException {
         String userLogin = null;
-        int inputLength;
-        char userSymbols;
-        Scanner input = new Scanner(System.in);
-        System.out.println("Create user name (from 6 to not more than 20 symbols and Latin letters only!)");
-        try {
-            if (input.hasNextLine()) {
-                userInput = input.nextLine();
-                inputLength = userInput.length();
-                if (inputLength <= 20 && inputLength >= 6) {
-                    for (int i = 0; i < inputLength; i++) {
-                        userSymbols = userInput.charAt(i);
-                        if (userSymbols >= 'A' && userSymbols <= 'Z' || userSymbols >= 'a' && userSymbols <= 'z') {
-                            userLogin = userInput;
-                        } else {
-                            throw new WrongLoginException("Invalid symbols to create user name, check condition and try again");
-                        }
-                    }
+        int inputLength = userInput.length();
+        char userSymbol;
+        int inputLettersCount = 0;
+
+        while (userLogin == null) {
+            if (inputLength >= 6 && inputLength <= 20) {
+            } else {
+                throw new WrongLoginException("Invalid length of login, must be 6-20 symbols");
+            }
+            for (int i = 0; i < inputLength; i++) {
+                userSymbol = userInput.charAt(i);
+                if (userSymbol >= 'A' && userSymbol <= 'Z' || userSymbol >= 'a' && userSymbol <= 'z') {
+                    inputLettersCount++;
                 } else {
-                    throw new WrongLoginException("Invalid length to create user name, check condition and try again");
+                    throw new WrongLoginException("Invalid symbols in login, must be Latin A-Z, a-z letters only!");
                 }
             }
-        } catch (WrongLoginException exc) {
-            System.out.println(exc.getMessage());
-            createLogin();
+            if (inputLettersCount >= 6) {
+                userLogin = userInput;
+            }
         }
         return userLogin;
     }
 
 
-    public String createPassword() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Create password (Latin letters and numbers, 6-25 symbols, at least 1 letter and 1 number)");
-        String userInput;
+    public String createPassword(String inputPassword) throws NullPointerException {
         String userPassword = null;
-        int passwordLength;
+        int passwordLength = inputPassword.length();
         char passwordSymbol;
         int passwordLettersCount = 0;
         int passwordNumbersCount = 0;
 
-        try {
-            if (input.hasNextLine()) {
-                userInput = input.nextLine();
-                passwordLength = userInput.length();
-                if (passwordLength >= 6 && passwordLength <= 25) {
-                    for (int i = 0; i < passwordLength; i++) {
-                        passwordSymbol = userInput.charAt(i);
-                        if (passwordSymbol >= 'A' && passwordSymbol <= 'Z' || passwordSymbol >= 'a' && passwordSymbol <= 'z') {
-                            passwordLettersCount++;
-                        } else if (passwordSymbol >= '0' && passwordSymbol <= '9') {
-                            passwordNumbersCount++;
-                        } else {
-                            throw new WrongPasswordException("Invalid symbols in password, check conditions and try again");
-                        }
-                    }
-                    if (passwordLettersCount >= 1 && passwordNumbersCount >= 1) {
-                        userPassword = userInput;
-                    } else {
-                        throw new WrongPasswordException("Not used  at least one letter or number, check conditions and try again");
-                    }
+        while (userPassword == null) {
+            if (passwordLength >= 6 && passwordLength <= 25) {
+            } else {
+                throw new WrongPasswordException("Invalid length of password, must be 6-25 symbols");
+            }
+            for (int i = 0; i < passwordLength; i++) {
+                passwordSymbol = inputPassword.charAt(i);
+                if (passwordSymbol >= 'A' && passwordSymbol <= 'Z' || passwordSymbol >= 'a' && passwordSymbol <= 'z') {
+                    passwordLettersCount++;
+                } else if (passwordSymbol >= '0' && passwordSymbol <= '9') {
+                    passwordNumbersCount++;
                 } else {
-                    throw new WrongPasswordException("Invalid length of password, check conditions and try again");
+                    throw new WrongPasswordException("Invalid symbols in password, must be A-Z, a-z, 0-9 symbols only!");
                 }
             }
-        } catch (WrongPasswordException exc) {
-            System.out.println(exc.getMessage());
-            createPassword();
+            if (passwordLettersCount >= 1 && passwordNumbersCount >= 1) {
+                userPassword = inputPassword;
+            } else {
+                throw new WrongPasswordException("Password must contain at least one letter and number!");
+            }
         }
         return userPassword;
     }
 
 
-    public boolean confirmPassword() {
+    public boolean confirmPassword(String inputConfirmPassword) throws NullPointerException {
         boolean confirmed = false;
         int tries = 3;
-        String inputConfirm;
-        Scanner input = new Scanner(System.in);
+
+        if (inputConfirmPassword.equals(password)) {
+            confirmed = true;
+        }
+        while (tries > 0 && !confirmed) {
+            Scanner input = new Scanner(System.in);
+            System.out.println("You failed to confirm password. Tries left " + tries);
+            System.out.print("Confirm created password: ");
+            if (input.hasNextLine()) {
+                inputConfirmPassword = input.nextLine();
+                if (inputConfirmPassword.equals(password)) {
+                    confirmed = true;
+                    System.out.println("Confirmed Successfully!" + '\n');
+                } else {
+                    tries--;
+                }
+            }
+        }
         try {
-            while (tries > 0 && !confirmed) {
-                System.out.println("Tries left " + tries);
-                System.out.print("Confirm created password: ");
-                if (input.hasNextLine()) {
-                    inputConfirm = input.nextLine();
-                    if (inputConfirm.equals(password)) {
-                        confirmed = true;
-                        System.out.println("Confirmed Successfully!" + '\n');
-                    } else {
-                        tries--;
-                    }
-                }
-                if (tries == 0) {
-                    clearLogin(login);
-                    clearPassword(password);
-                    throw new WrongPasswordException("You failed to confirm password!");
-                }
+            if (tries == 0) {
+                clearLogin(login);
+                clearPassword(password);
+                throw new WrongPasswordException('\n' + "You failed to confirm password! Your data was not saved!");
             }
         } catch (WrongPasswordException exc) {
             System.out.println(exc.getMessage());
         } finally {
-            System.out.println("Дякую, що скористались нашим сервісом");
+            System.out.println("Дякую, що скористались нашим сервісом" + '\n');
         }
         return confirmed;
     }
 }
+
+
