@@ -30,7 +30,12 @@ public class User {
         this.password = null;
     }
 
-    public String createLogin(String userInput) throws NullPointerException {
+
+    public String createLogin(String userInput) {
+        if (userInput == null) {
+            throw new WrongLoginException("Login can`t be null");
+        }
+
         String userLogin = null;
         int inputLength = userInput.length();
         char userSymbol;
@@ -57,7 +62,11 @@ public class User {
     }
 
 
-    public String createPassword(String inputPassword) throws NullPointerException {
+    public String createPassword(String inputPassword) {
+        if (inputPassword == null) {
+            throw new WrongLoginException("Password can`t be null");
+        }
+
         String userPassword = null;
         int passwordLength = inputPassword.length();
         char passwordSymbol;
@@ -89,7 +98,16 @@ public class User {
     }
 
 
-    public boolean confirmPassword(String inputConfirmPassword) throws NullPointerException {
+    public boolean confirmPassword(String inputConfirmPassword) {
+        try {
+            if (inputConfirmPassword == null) {
+                throw new WrongPasswordException("You created not null password!" + '\n');
+            }
+        } catch (WrongPasswordException exc) {
+            System.out.println(exc.getMessage());
+            inputConfirmPassword = "";
+        }
+
         boolean confirmed = false;
         int tries = 3;
 
