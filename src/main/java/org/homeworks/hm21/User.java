@@ -13,7 +13,6 @@ public class User {
         confirmPassword(confirmPassword);
     }
 
-
     public String getLogin() {
         return login;
     }
@@ -21,6 +20,7 @@ public class User {
     public String getPassword() {
         return password;
     }
+
 
     private void clearLogin(String login) {
         this.login = null;
