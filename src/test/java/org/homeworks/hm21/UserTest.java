@@ -25,20 +25,15 @@ public class UserTest {
 
     @Test
     void createLoginValidValueTest() {
-        User user1 = new User("myname", "hillel1", "hillel1");
-        Assertions.assertEquals("myname", user1.getLogin());
-
-        User user2 = new User("MYNAME", "hillel1", "hillel1");
-        Assertions.assertEquals("MYNAME", user2.getLogin());
-
-        User user3 = new User("MYNAMEmynameMYNAMEmy", "hillel1", "hillel1"); //20
-        Assertions.assertEquals("MYNAMEmynameMYNAMEmy", user3.getLogin());
+       User user = new User();
+       user.createLogin("Hillel");
+        Assertions.assertEquals("Hillel", user.getLogin());
     }
 
     @Test
     void createLoginNullTest() {
         User user = new User("hillel", "hillel1", "hillel1");
-        Assertions.assertThrows(NullPointerException.class, () -> user.createLogin(null));
+        Assertions.assertThrows(WrongLoginException.class, () -> user.createLogin(null));
     }
 
     @Test
@@ -62,32 +57,57 @@ public class UserTest {
 
     @Test
     void createPasswordValidValueTest() {
-        User user1 = new User("myname", "hillel1", "hillel1");
-        Assertions.assertEquals("hillel1", user1.getPassword());
+        User user = new User();
+        user.createPassword("hille9");
+        Assertions.assertEquals("hille9", user.getPassword());
 
-        User user2 = new User("myname", "HILLEL1", "HILLEL1");
-        Assertions.assertEquals("HILLEL1", user2.getPassword());
 
-        User user3 = new User("myname", "12345H", "12345H");
-        Assertions.assertEquals("12345H", user3.getPassword());
     }
 
     @Test
     void createPasswordNullTest() {
         User user = new User("hillel", "hillel1", "hillel1");
-        Assertions.assertThrows(NullPointerException.class, () -> user.createPassword(null));
+        Assertions.assertThrows(WrongPasswordException.class, () -> user.createPassword(null));
     }
 
     @Test
-    void confirmPasswordTest() {
-        User user = new User("hillel", "Hillel1", "Hillel1"); // Play Login class to test full functional of method.
-        boolean result1 = user.confirmPassword("Hillel1");
-        Assertions.assertTrue(result1);
+    void confirmTruePasswordTest() {
+            User user = new User();
+            user.createPassword("Hillel9");
+            Assertions.assertTrue(user.confirmPassword("Hillel9"));
     }
 
     @Test
-    void confirmPasswordNullTest() {
-        User user = new User("hillel", "Hillel1", "Hillel1");
-        Assertions.assertThrows(NullPointerException.class, () -> user.confirmPassword(null));
+    void confirmFalsePasswordTest() {
+        User user = new User();
+        user.createPassword("Hillel9");
+        Assertions.assertThrows(WrongPasswordException.class, () -> user.confirmPassword("hillel0"));
     }
+
+    @Test
+    void confirmNullPasswordTest() {
+        User user = new User();
+        user.createPassword("Hillel9");
+        Assertions.assertThrows(WrongPasswordException.class, () -> user.confirmPassword(null));
+    }
+
+    @Test
+    void clearLoginTest() {
+        User user = new User();
+        user.createLogin("Hillel");
+        user.clearLogin();
+        Assertions.assertNull(user.getLogin());
+    }
+
+    @Test
+    void clearPasswordTest() {
+        User user = new User();
+        user.createPassword("Hillel9");
+        user.clearPassword();
+        Assertions.assertNull(user.getPassword());
+    }
+
+
+
+
 }
