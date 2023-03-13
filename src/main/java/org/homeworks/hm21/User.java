@@ -7,6 +7,10 @@ public class User {
     private String password;
 
 
+    public User() {
+
+    }
+
     public User(String login, String password, String confirmPassword) {
         this.login = createLogin(login);
         this.password = createPassword(password);
@@ -21,125 +25,83 @@ public class User {
         return password;
     }
 
-
-    private void clearLogin(String login) {
+    public void clearLogin() {
         this.login = null;
     }
 
-    private void clearPassword(String password) {
+    public void clearPassword() {
         this.password = null;
     }
-
 
     public String createLogin(String userInput) {
         if (userInput == null) {
             throw new WrongLoginException("Login can`t be null");
         }
 
-        String userLogin = null;
         int inputLength = userInput.length();
         char userSymbol;
         int inputLettersCount = 0;
 
-        while (userLogin == null) {
-            if (inputLength >= 6 && inputLength <= 20) {
+        if (inputLength < 6 || inputLength > 20) {
+            throw new WrongLoginException("Invalid length of login, must be 6-20 symbols");
+        }
+        for (int i = 0; i < inputLength; i++) {
+            userSymbol = userInput.charAt(i);
+            if (userSymbol >= 'A' && userSymbol <= 'Z' || userSymbol >= 'a' && userSymbol <= 'z') {
+                inputLettersCount++;
             } else {
-                throw new WrongLoginException("Invalid length of login, must be 6-20 symbols");
-            }
-            for (int i = 0; i < inputLength; i++) {
-                userSymbol = userInput.charAt(i);
-                if (userSymbol >= 'A' && userSymbol <= 'Z' || userSymbol >= 'a' && userSymbol <= 'z') {
-                    inputLettersCount++;
-                } else {
-                    throw new WrongLoginException("Invalid symbols in login, must be Latin A-Z, a-z letters only!");
-                }
-            }
-            if (inputLettersCount >= 6) {
-                userLogin = userInput;
+                throw new WrongLoginException("Invalid symbols in login, must be Latin A-Z, a-z letters only!");
             }
         }
-        return userLogin;
+        if (inputLettersCount >= 6) {
+            login = userInput;
+        }
+        return login;
     }
 
 
     public String createPassword(String inputPassword) {
         if (inputPassword == null) {
-            throw new WrongLoginException("Password can`t be null");
+            throw new WrongPasswordException("Password can`t be null");
         }
 
-        String userPassword = null;
         int passwordLength = inputPassword.length();
         char passwordSymbol;
         int passwordLettersCount = 0;
         int passwordNumbersCount = 0;
 
-        while (userPassword == null) {
-            if (passwordLength >= 6 && passwordLength <= 25) {
+        if (passwordLength < 6 || passwordLength > 25) {
+            throw new WrongPasswordException("Invalid length of password, must be 6-25 symbols");
+        }
+        for (int i = 0; i < passwordLength; i++) {
+            passwordSymbol = inputPassword.charAt(i);
+            if (passwordSymbol >= 'A' && passwordSymbol <= 'Z' || passwordSymbol >= 'a' && passwordSymbol <= 'z') {
+                passwordLettersCount++;
+            } else if (passwordSymbol >= '0' && passwordSymbol <= '9') {
+                passwordNumbersCount++;
             } else {
-                throw new WrongPasswordException("Invalid length of password, must be 6-25 symbols");
-            }
-            for (int i = 0; i < passwordLength; i++) {
-                passwordSymbol = inputPassword.charAt(i);
-                if (passwordSymbol >= 'A' && passwordSymbol <= 'Z' || passwordSymbol >= 'a' && passwordSymbol <= 'z') {
-                    passwordLettersCount++;
-                } else if (passwordSymbol >= '0' && passwordSymbol <= '9') {
-                    passwordNumbersCount++;
-                } else {
-                    throw new WrongPasswordException("Invalid symbols in password, must be A-Z, a-z, 0-9 symbols only!");
-                }
-            }
-            if (passwordLettersCount >= 1 && passwordNumbersCount >= 1) {
-                userPassword = inputPassword;
-            } else {
-                throw new WrongPasswordException("Password must contain at least one letter and number!");
+                throw new WrongPasswordException("Invalid symbols in password, must be A-Z, a-z, 0-9 symbols only!");
             }
         }
-        return userPassword;
+        if (passwordLettersCount >= 1 && passwordNumbersCount >= 1) {
+            password = inputPassword;
+        } else {
+            throw new WrongPasswordException("Password must contain at least one letter and number!");
+        }
+        return password;
     }
 
 
-    public boolean confirmPassword(String inputConfirmPassword) {
-        try {
-            if (inputConfirmPassword == null) {
-                throw new WrongPasswordException("You created not null password!" + '\n');
-            }
-        } catch (WrongPasswordException exc) {
-            System.out.println(exc.getMessage());
-            inputConfirmPassword = "";
+    public boolean confirmPassword(String inputConfirmPassword) throws WrongPasswordException {
+        if (inputConfirmPassword == null) {
+            throw new WrongPasswordException("You created password was not null");
         }
-
-        boolean confirmed = false;
-        int tries = 3;
-
         if (inputConfirmPassword.equals(password)) {
-            confirmed = true;
+            System.out.println("You successfully confirmed password");
+            return true;
+        } else {
+            throw new WrongPasswordException("You failed to confirm password!");
         }
-        while (tries > 0 && !confirmed) {
-            Scanner input = new Scanner(System.in);
-            System.out.println("You failed to confirm password. Tries left " + tries);
-            System.out.print("Confirm created password: ");
-            if (input.hasNextLine()) {
-                inputConfirmPassword = input.nextLine();
-                if (inputConfirmPassword.equals(password)) {
-                    confirmed = true;
-                    System.out.println("Confirmed Successfully!" + '\n');
-                } else {
-                    tries--;
-                }
-            }
-        }
-        try {
-            if (tries == 0) {
-                clearLogin(login);
-                clearPassword(password);
-                throw new WrongPasswordException('\n' + "You failed to confirm password! Your data was not saved!");
-            }
-        } catch (WrongPasswordException exc) {
-            System.out.println(exc.getMessage());
-        } finally {
-            System.out.println("Дякую, що скористались нашим сервісом" + '\n');
-        }
-        return confirmed;
     }
 }
 
