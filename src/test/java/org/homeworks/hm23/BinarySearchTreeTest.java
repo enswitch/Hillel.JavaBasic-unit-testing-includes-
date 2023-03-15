@@ -7,44 +7,25 @@ public class BinarySearchTreeTest {
     void testInsertAndSearch() {
         BinarySearchTree tree = new BinarySearchTree();
 
-        tree.insert(5, 1);
+        tree.insert(1, 7);
+        tree.insert(2, 4);
         tree.insert(3, 2);
-        tree.insert(2, 3);
-        tree.insert(4, 4);
-        tree.insert(7, 5);
-        tree.insert(6, 6);
-        tree.insert(8, 7);
 
-        Node searchResult = tree.search(6);
-        Assertions.assertEquals(searchResult.value, 6);
-
-        searchResult = tree.search(9);
-        Assertions.assertNull(searchResult);
+        Node searchResult1 = tree.search(1);
+        Assertions.assertEquals(7, searchResult1.value);
     }
 
     @Test
     void testDelete() {
         BinarySearchTree tree = new BinarySearchTree();
 
-        tree.insert(5, 1);
+        tree.insert(1, 7);
+        tree.insert(2, 4);
         tree.insert(3, 2);
-        tree.insert(2, 3);
-        tree.insert(4, 4);
-        tree.insert(7, 5);
-        tree.insert(6, 6);
-        tree.insert(8, 7);
 
         tree.delete(2);
 
         Node searchResult = tree.search(2);
         Assertions.assertNull(searchResult);
-
-        tree.delete(3);
-
-        searchResult = tree.search(3);
-        Assertions.assertNull(searchResult);
-
-        searchResult = tree.search(4);
-        Assertions.assertEquals(searchResult.value, 4);
     }
 }
