@@ -32,67 +32,63 @@ public class MyArrayList implements MyList {
         }
     }
 
-    public void checkIndexValue(int index) {
-        if (index >= size || index <= 0) {
-            throw new IndexOutOfBoundsException("Invalid index!");
+    public void checkIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
         }
     }
 
     @Override
     public void add(String value) { //addFirst
-        resizeArrayIfNeed();
-        System.arraycopy(elements, 0, elements, 1, elements.length - 1);
-        elements[0] = value;
-        size++;
+        add(value, 0);
     }
 
     @Override
     public void add(String value, int index) {
-        checkIndexValue(index);
+        checkIndex(index);
         resizeArrayIfNeed();
         System.arraycopy(elements, index, elements, index + 1, size - index);
         elements[index] = value;
         size++;
-
     }
 
     @Override
     public void addLast(String value) {
-        resizeArrayIfNeed();
-        elements[size] = value;
-        size++;
+        add(value, size);
     }
 
     @Override
     public String get(int index) {
-        checkIndexValue(index);
+        checkIndex(index);
         return elements[index];
     }
 
     @Override
     public String remove(int index) {
-        checkIndexValue(index);
+        checkIndex(index);
         String removedElem = elements[index];
-        System.arraycopy(elements, index + 1, elements, index, size - index);
-        size--;
+        System.arraycopy(elements, index + 1, elements, index, size - index - 1);
+        elements[--size] = null;
         return removedElem;
     }
 
     @Override
     public String removeLast() {
         String removedElem = elements[size - 1];
-        System.arraycopy(elements, size, elements, size - 1, size);
+        elements[size - 1] = null;
         size--;
         return removedElem;
     }
 
     @Override
     public String remove() { //remove first
+        if (size == 0) {
+            throw new IllegalStateException("Cannot remove from an empty list");
+        }
         String removedElem = elements[0];
-        System.arraycopy(elements, 1, elements, 0, size);
-        size--;
+        System.arraycopy(elements, 1, elements, 0, size - 1);
+        elements[--size] = null;
         return removedElem;
-
     }
 
     @Override
