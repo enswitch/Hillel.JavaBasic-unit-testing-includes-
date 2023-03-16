@@ -35,6 +35,5 @@ public class ArrayListDemo {
         newList.printAll();
         newList.remove(0);
         newList.printAll();
-
     }
 }

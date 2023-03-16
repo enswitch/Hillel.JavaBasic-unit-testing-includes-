@@ -6,34 +6,11 @@ import org.junit.jupiter.api.Test;
 
 public class MyArrayListTest {
 
-    @Test
-    void capacityAndResizeTest() {
-        MyArrayList list1 = new MyArrayList(); //8
-
-        list1.add("new");
-        list1.printAll();
-
-        MyArrayList list2 = new MyArrayList(1); //1
-
-        list2.add("new"); //1
-        list2.printAll();
-
-        list2.add("new"); //2
-        list2.add("new"); //4
-        list2.printAll();
-    }
 
     @Test
-    void checkIndexTest() {
+    void getInvalidIndexElement() {
         MyArrayList list = new MyArrayList();
-
-        list.add("new");
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> list.checkIndex(2));
-
-        list.add("new");
-        list.add("new");
-        list.remove();
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> list.checkIndex(3));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> list.get(0));
     }
 
     @Test
@@ -71,10 +48,19 @@ public class MyArrayListTest {
     }
 
     @Test
-    void removeFirstTest() {
-        MyArrayList list = new MyArrayList(1);
-        list.add("first");
+    void removeEmptyArrayTest() {
+        MyArrayList list = new MyArrayList();
 
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> list.remove());
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> list.remove(0));
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> list.removeLast());
+    }
+
+    @Test
+    void removeFirstTest() {
+        MyArrayList list = new MyArrayList();
+
+        list.add("first");
         Assertions.assertEquals("first", list.remove());
     }
 
@@ -85,29 +71,28 @@ public class MyArrayListTest {
         list.add("first");
         list.addLast("third");
         list.add("second", 1);
-
         Assertions.assertEquals("third", list.removeLast());
     }
 
     @Test
     void removeByIndexTest() {
-        MyArrayList list = new MyArrayList(1);
-        list.add("test");
+        MyArrayList list = new MyArrayList();
 
+        list.add("test");
         Assertions.assertEquals("test", list.remove(0));
     }
 
     @Test
     void removeByInvalidIndex() {
-        MyArrayList list = new MyArrayList(1);
-        list.add("test");
+        MyArrayList list = new MyArrayList();
 
+        list.add("test");
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> list.remove(1));
     }
 
     @Test
     void sizeTest() {
-        MyArrayList list = new MyArrayList(1);
+        MyArrayList list = new MyArrayList();
         list.add("test", 0);
         list.add("test", 1);
         list.add("test", 2);
@@ -120,5 +105,4 @@ public class MyArrayListTest {
 
         Assertions.assertEquals(2, list.size());
     }
-
 }

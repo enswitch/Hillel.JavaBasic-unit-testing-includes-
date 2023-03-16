@@ -24,7 +24,7 @@ public class MyArrayList implements MyList {
         return size;
     }
 
-    public void resizeArrayIfNeed() {
+    private void resizeArrayIfNeed() {
         if (elements.length == size) {
             String[] newArray = new String[elements.length * 2];
             System.arraycopy(elements, 0, newArray, 0, size);
@@ -32,11 +32,18 @@ public class MyArrayList implements MyList {
         }
     }
 
-    public void checkIndex(int index) {
+    private void checkArraySize() {
+        if (size == 0) {
+            throw new IndexOutOfBoundsException("Cannot remove from an empty list");
+        }
+    }
+
+    private void checkIndex(int index) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
         }
     }
+
 
     @Override
     public void add(String value) { //addFirst
@@ -59,21 +66,26 @@ public class MyArrayList implements MyList {
 
     @Override
     public String get(int index) {
-        checkIndex(index);
+        if (index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
+        }
         return elements[index];
     }
 
     @Override
     public String remove(int index) {
+        checkArraySize();
         checkIndex(index);
         String removedElem = elements[index];
         System.arraycopy(elements, index + 1, elements, index, size - index - 1);
-        elements[--size] = null;
+        elements[size - 1] = null;
+        size--;
         return removedElem;
     }
 
     @Override
     public String removeLast() {
+        checkArraySize();
         String removedElem = elements[size - 1];
         elements[size - 1] = null;
         size--;
@@ -82,17 +94,24 @@ public class MyArrayList implements MyList {
 
     @Override
     public String remove() { //remove first
-        if (size == 0) {
-            throw new IllegalStateException("Cannot remove from an empty list");
-        }
+        checkArraySize();
         String removedElem = elements[0];
         System.arraycopy(elements, 1, elements, 0, size - 1);
-        elements[--size] = null;
+        elements[size - 1] = null;
+        size--;
         return removedElem;
     }
 
     @Override
     public void printAll() {
-        System.out.println(Arrays.toString(elements));
+        System.out.print("[");
+        for (int i = 0; i <= size - 1; i++) {
+            if (i == size - 1) {
+                System.out.print(elements[i]);
+            } else {
+                System.out.print(elements[i] + ", ");
+            }
+        }
+        System.out.println("]");
     }
 }
