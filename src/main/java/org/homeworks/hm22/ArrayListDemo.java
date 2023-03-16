@@ -5,6 +5,7 @@ public class ArrayListDemo {
     public static void main(String[] args) {
         MyArrayList example = new MyArrayList(); // default capacity 8
         example.printAll();
+        System.out.println(example.size());
 
 
         MyArrayList list = new MyArrayList(1); // new capacity 1
