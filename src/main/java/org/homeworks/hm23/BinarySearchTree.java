@@ -1,89 +1,90 @@
 package org.homeworks.hm23;
 
 public class BinarySearchTree {
+
+    private class Node {
+        int key;
+        Node left, right;
+
+        Node(int key) {
+            this.key = key;
+        }
+    }
+
     Node root;
 
-    BinarySearchTree() {
-        root = null;
-    }
 
-    void insert(int key, int value) {
-        root = insertRecursive(root, key, value);
-    }
-
-    Node insertRecursive(Node root, int key, int value) {
-        if (root == null) {
-            root = new Node(key, value);
-            return root;
+    private Node add(Node node, int key) {
+        if (node == null) {
+            return new Node(key);
         }
-        if (key < root.key) {
-            root.left = insertRecursive(root.left, key, value);
-        } else if (key > root.key) {
-            root.right = insertRecursive(root.right, key, value);
+        if (node.key > key) {
+            node.left = add(node.left, key);
+        } else if (node.key < key) {
+            node.right = add(node.right, key);
         }
-        return root;
+        return node;
     }
 
-    void inorder() {
-        inorderRecursive(root);
+
+    public void add(int key) {
+        root = add(root, key);
     }
 
-    void inorderRecursive(Node root) {
-        if (root != null) {
-            inorderRecursive(root.left);
-            System.out.print("(key " + root.key + ": " + root.value + ") ");
-            inorderRecursive(root.right);
+
+    private Node minFind(Node node) {
+        while (node.left != null) {
+            node = node.left;
         }
+        return node;
     }
 
 
-    Node search(int key) {
-        return searchRecursive(root, key);
-    }
-
-    Node searchRecursive(Node root, int key) {
-        if (root == null || root.key == key) {
-            return root;
+    private Node remove(Node node, int key) {
+        if (node == null) {
+            return null;
         }
-        if (key < root.key) {
-            return searchRecursive(root.left, key);
-        }
-        return searchRecursive(root.right, key);
-    }
-
-
-    void delete(int key) {
-        root = deleteRecursive(root, key);
-    }
-
-
-    Node deleteRecursive(Node root, int key) {
-        if (root == null) {
-            return root;
-        }
-        if (key < root.key) {
-            root.left = deleteRecursive(root.left, key);
-        } else if (key > root.key) {
-            root.right = deleteRecursive(root.right, key);
+        if (node.key > key) {
+            node.left = remove(node.left, key);
+        } else if (node.key < key) {
+            node.right = remove(node.right, key);
         } else {
-            if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
-                return root.left;
+            if (node.left == null && node.right == null) {
+                return null;
+            } else if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            } else {
+                Node minNode = minFind(node.right);
+                node.key = minNode.key;
+                node.right = remove(node.right, minNode.key);
             }
-            Node minNode = minValueNode(root.right);
-            root.key = minNode.key;
-            root.value = minNode.value;
-            root.right = deleteRecursive(root.right, minNode.key);
         }
-        return root;
+        return node;
     }
 
-    Node minValueNode(Node node) {
-        Node current = node;
-        while (current.left != null) {
-            current = current.left;
+
+    public void remove(int key) {
+        root = remove(root, key);
+    }
+
+
+    private boolean search(Node node, int key) {
+        if (node == null) {
+            return false;
         }
-        return current;
+        if (node.key == key) {
+            return true;
+        } else if (node.key > key) {
+            return search(node.left, key);
+        } else {
+            return search(node.right, key);
+        }
+    }
+
+
+    public boolean search(int key) {
+        return search(root, key);
     }
 }

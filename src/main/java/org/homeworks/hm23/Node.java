@@ -1,13 +1,16 @@
 package org.homeworks.hm23;
 
 public class Node {
+    String value;
     int key;
-    int value;
-    Node left, right;
+    Node left;
+    Node right;
 
-    public Node(int key, int value) {
-        this.key = key;
+    public Node(String value, int key) {
         this.value = value;
-        left = right = null;
+        this.key = key;
+        this.left = null;
+        this.right = null;
     }
 }
+

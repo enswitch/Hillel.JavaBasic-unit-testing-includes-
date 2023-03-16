@@ -4,29 +4,27 @@ public class Main {
     public static void main(String[] args) {
         BinarySearchTree tree = new BinarySearchTree();
 
-        tree.insert(5, 1);
-        tree.insert(3, 2);
-        tree.insert(2, 3);
-        tree.insert(4, 4);
-        tree.insert(7, 5);
-        tree.insert(6, 6);
-        tree.insert(8, 7);
+        tree.add(4);
+        tree.add(3);
+        tree.add(5);
+        tree.add(8);
+        tree.add(2);
+        tree.add(1);
+        tree.add(7);
 
-        System.out.println("Created binary tree:");
-        tree.inorder();
-
-
-        Node searchResult = tree.search(7);
-        if (searchResult != null) {
-            System.out.println("\n\nFound value " + searchResult.value);
-        } else {
-            System.out.println("\n\nValue for key not found");
-        }
+        System.out.println(tree.search(9)); //not exist
+        System.out.println(tree.search(4));
+        System.out.println(tree.search(7));
+        System.out.println(tree.search(8) + "\n");
 
 
-        tree.delete(7);
-        System.out.println("Inorder the modified tree:");
-        tree.inorder();
+        tree.remove(7);
+        tree.remove(4);
+        tree.remove(8);
 
+
+        System.out.println(tree.search(7));
+        System.out.println(tree.search(4));
+        System.out.println(tree.search(8));
     }
 }
